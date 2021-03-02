@@ -1,44 +1,85 @@
-version: "3.8"
-
 services:
-  maven:
+  jenkins:
+    image: jenkins/jenkins:${JENKINS_TAG}
+    container_name: ${PROJECT_NAME}-jenkins
+    networks:
+      - sonarnet
+    ports:
+      - "8082:8080"
+      - "8443:8443"
+      - "50000:50000"  
+    expose:
+      - "8080"
+    environment:
+      - http_proxy=${HTTP_PROXY}
+      - https_proxy=${HTTP_PROXY}
+      - JENKINS_UC=http://updates.jenkins.io
+      - JENKINS_UC_EXPERIMENTAL=http://updates.jenkins.io/experimental
+      - JENKINS_INCREMENTALS_REPO_MIRROR=http://repo.jenkins-ci.org/incrementals
+    user: root
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - jenkins-home:/home
 
-  gradle:
+  # nexus:
+  #   image: sonatype/nexus3
+  #   container_name: nexus
+  #   volumes:
+  #     - "nexus-data:/nexus-data"
+  #   ports:
+  #     - "8081:8081"
+  #   expose:
+  #     - "8081"
 
-
+  db:
+    image: postgres:${POSTGRES_TAG}
+    container_name: ${PROJECT_NAME}-postgres
+    networks:
+      - sonarnet
+    ports:
+      - "8083:8080"
+    expose:
+      - "5432"
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+      - POSTGRES_DB=sonarqube
+    restart: always
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
 
   sonarqube:
-    image: sonarqube:latest
-      container_name: sonarqube
-      hostname: sonarqube
-      networks:
-        - sonarnet
-      depends_on:
-        - database
-      ports:
-        - 9000:9000
-      environment:
-        - sonar.jdbc.url=jdbc:postgresql://database:5432/sonarqube
-      volumes:
-        - /opt/sonarqube/conf:/opt/sonarqube/conf:z
-        - /opt/sonarqube/extensions/plugins:/opt/sonarqube/extensions/plugins:z
-        - /opt/sonarqube/extensions/downloads:/opt/sonarqube/extensions/downloads:z
-        - /opt/sonarqube/data:/opt/sonarqube/data:z
-        
-  jenkins:
-    image: jenkins/jenkins:lts
-    privileged: true
-    user: root
+    image: sonarqube:${SONARQUBE_TAG}
+    container_name: ${PROJECT_NAME}-sonarqube
+    networks:
+      - sonarnet
     ports:
-      - 8083:8080
-      - 50003:50000
-    container_name: my-jenkins-3
-    volumes:
-      - ~/jenkins_data:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
+      - "9000:9000"
+      - "9092:9092"
+    environment:
+      - SONARQUBE_JDBC_USERNAME=sonar
+      - SONARQUBE_JDBC_PASSWORD=sonar
+      - sonar.jdbc.url=jdbc:postgresql://db:5432/sonarqube
+      - http_proxy=${HTTP_PROXY}
+      - https_proxy=${HTTP_PROXY}
+    restart: always
     depends_on:
-      - sonarqube
+    - db
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
 
 networks:
   sonarnet:
     driver: bridge
+
+volumes:
+  jenkins-data: {}
+  jenkins-home: {}
+  sonarqube_conf: {}
+  sonarqube_data: {}
+  sonarqube_extensions: {}
+  postgresql: {}
+  postgresql_data: {}
