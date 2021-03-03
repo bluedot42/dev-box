@@ -51,8 +51,39 @@ docker run -v "$(pwd)":[volume_name] [docker_image]
 
 ### Jenkins
 
+localhost:8082
+
+- user:bitnami
+
 ### Sonarqube
 
-<http://localhost:9000/>
+localhost:9000
 
 - admin:test
+
+## Upgrade of image
+
+### Step 1. Get the updated images
+
+`$ docker pull bitnami/jenkins:latest`
+
+### Step 2. Stop your container
+
+- For docker-compose: `$ docker-compose stop jenkins`
+- For manual execution:`$ docker stop jenkins`
+
+### Step 3. Take a snapshot of the application state
+
+`$ rsync -a /path/to/jenkins-persistence /path/to/jenkins-persistence.bkp.$(date +%Y%m%d-%H.%M.%S)`
+
+You can use this snapshot to restore the application state should the upgrade fail.
+
+### Step 4. Remove the stopped container
+
+- For docker-compose: `$ docker-compose rm -v jenkins`
+- For manual execution: `$ docker rm -v jenkins`
+
+### Step 5. Run the new image
+
+- For docker-compose:`$ docker-compose up jenkins`
+- For manual execution (mount the directories if needed): `docker run --name jenkins bitnami/jenkins:latest`
