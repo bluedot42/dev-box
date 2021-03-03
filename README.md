@@ -2,6 +2,12 @@
 
 本地开发环境配置
 
+## zsh plugin
+
+with oh-my-zsh, in .zshrc
+
+plugins=(... docker docker-compose)
+
 ## Volumes
 
 ## Ubuntu
@@ -33,9 +39,15 @@ Backup files
 
 ## Clean up
 
-docker rm ${docker ps -a -q}
+with bash
+`docker rm ${docker ps -a -q}`
 
-docker volume prune
+with zsh
+`docker ps -a -q | xargs docker rm`
+
+`docker volume prune`
+
+`docker volume ls | awk {'print $2'} | xargs docker volume rm`
 
 ## Proxy
 
@@ -60,6 +72,10 @@ localhost:8082
 localhost:9000
 
 - admin:test
+
+## Status check
+
+`docker-compose ps`
 
 ## Upgrade of image
 
