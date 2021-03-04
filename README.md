@@ -94,7 +94,7 @@ You can use this snapshot to restore the application state should the upgrade fa
 
 #### 以root用户执行
 
-`docker exec -it <docker_container_name> -u root /bin/bash`
+`docker exec -it -u root <docker_container_name> bash`
 
 #### 查看文件内容
 
