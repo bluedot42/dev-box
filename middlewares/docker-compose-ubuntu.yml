@@ -107,23 +107,31 @@ volumes:
   vol-nginx-log:
   vol-rabbitmq-log:
   vol-rabbitmq-data:
-#   vol-mysql:
-#     driver_opts: 
-#       device: "${VOL_DIR}vol-mysql"
-#       type: "none"
-#   vol-mongo:
-#     driver_opts: 
-#       device: "${VOL_DIR}vol-mongo"
-#       type: "none"
-#   vol-redis:
-#     driver_opts: 
-#       device: "${VOL_DIR}vol-redis"
-#       type: "none"
-#   vol-rabbitmq:
-#     driver_opts: 
-#       device: "${VOL_DIR}vol-rabbitmq"
-#       type: "none"
-#   vol-rabbitmq-log:
-#     driver_opts: 
-#       device: "${VOL_DIR}vol-rabbitmq-log"
-#       type: "none"
+  # vol-mysql:
+  #   driver_opts: 
+  #     device: "${VOL_DIR}vol-mysql"
+  #     type: "none"
+  # vol-mongo:
+  #   driver_opts: 
+  #     device: "${VOL_DIR}vol-mongo"
+  #     type: "none"
+  # vol-nginx-log:
+  #   driver_opts: 
+  #     device: "${VOL_DIR}vol-nginx-log"
+  #     type: "none"
+  # vol-redis:
+  #   driver_opts: 
+  #     device: "${VOL_DIR}vol-redis"
+  #     type: "none"
+  # vol-rabbitmq:
+  #   driver_opts: 
+  #     device: "${VOL_DIR}vol-rabbitmq"
+  #     type: "none"
+  # vol-rabbitmq-data:
+  #   driver_opts: 
+  #     device: "${VOL_DIR}vol-rabbitmq-data"
+  #     type: "none"
+  # vol-rabbitmq-log:
+  #   driver_opts: 
+  #     device: "${VOL_DIR}vol-rabbitmq-log"
+  #     type: "none"
