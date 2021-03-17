@@ -81,10 +81,13 @@ ln -s /mnt/c/Users/mau2sgh/atom/atombase/60-Projects/bluedot42 bluedot42
 ln -s /mnt/c/Users/mau2sgh/atom/workspace/Playground Playground
 ```
 
+<<<<<<< HEAD
 ### List of WSL
 
 File explorer打开`\\wsl$`
 
+=======
+>>>>>>> bfb25ef9bb0d855d8185f35d40546b44c85f7c86
 ## 开发环境
 
 ### JHipster
