@@ -23,6 +23,64 @@ with oh-my-zsh, in `.zshrc`
 - Ubuntu: `docker-compose --env-file .ubuntu.env up -d`
 - Windows: `docker-compose up -d`
 
+## WSL
+
+### Enable
+
+```powershell
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+```
+
+```powershell
+Add-AppxPackage -Path CanonicalGroupLimited.Ubuntu18.04onWindows_1804.2018.817.0_x64.Appx
+```
+
+### add proxy for apt
+
+`sudo nano /etc/apt/apt.conf`
+
+```text
+Acquire::http::Proxy "http://rb-proxy-de.bosch.com:8080";
+Acquire::https::Proxy "http://rb-proxy-de.bosch.com:8080";
+```
+
+```bash
+sudo apt update
+sudo apt upgrade -y
+do-release-upgrade -d
+```
+
+### Proxy for others
+
+edit ~/bashrc and after editing use >source ~./bashrc :
+
+```text
+export http_proxy=http://localhost:3128
+export https_proxy=https://localhost:3128
+export HTTP_PROXY=$http_proxy
+export HTTPS_PROXY=$https_proxy
+```
+
+### Windows and WSL filesystem
+
+WSL has its own filesystem. This Linux filesystem is installed to your Windows filesystem at the following location:
+
+`%LOCALAPPDATA%\Lxss\`
+
+For instance, if your Windows username is Owner and Windows is installed on your C: drive, your WSL filesystem is located at:
+
+`C:\Users\Owner\AppData\Local\Lxss\`
+
+Your C: drive is located at:
+
+`/mnt/c/`
+
+```bash
+ln -s /mnt/c/Users/mau2sgh/atom/atombase/60-Projects/bluedot42 bluedot42
+
+ln -s /mnt/c/Users/mau2sgh/atom/workspace/Playground Playground
+```
+
 ## 开发环境
 
 ### JHipster
